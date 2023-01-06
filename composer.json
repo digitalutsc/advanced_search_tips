@@ -1,5 +1,5 @@
 {
-  "name": "Advanced Search Tips",
+  "name": "digitalutsc/advanced_search_tips",
   "type": "drupal-module",
   "description": "This module setup Help documentation for Advanced Search",
   "keywords": [
@@ -19,7 +19,8 @@
     }
   },
   "require": {
-    "drupal/asset_injector": "^2"
+    "drupal/asset_injector": "^2",
+    "drupal/fontawesome":"^2"
   },
   "require-dev": {
     "phpunit/phpunit": "^8",
