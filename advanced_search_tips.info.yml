@@ -7,3 +7,4 @@ dependencies:
   - asset_injector
   - block_content
   - context
+  - fontawesome
