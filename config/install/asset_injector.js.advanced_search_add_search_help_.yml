@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+id: advanced_search_add_search_help_
+label: 'Advanced Search - Add Search Help '
+code: |-
+  jQuery(window).on('load', function() {
+  	
+  	jQuery('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa-solid fa-circle-info"></i></button></span>').insertAfter(".advanced-search-form__search");
+  	
+  });
+noscript: ''
+noscriptRegion: {  }
+jquery: false
+header: false
+preprocess: true
+conditions:
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-advanced_search-page_1: view-advanced_search-page_1
+      view-collection-page_1: view-collection-page_1
+      view-collection_children-page_1: view-collection_children-page_1
+  context:
+    id: context
+    negate: null
+    values: ''
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+contexts: {  }
+conditions_require_all: true

@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+id: advanced_search_search_help
+label: 'Advanced Search - Search help'
+code: |-
+  #search-help button { 
+      font-size: 2.0em;
+      margin-top: 3px;
+  }
+
+  .dsu { 
+  	color: #001228 !important;
+  }
+
+  table tbody tr:nth-child(odd) { 
+     background-color: #FFFFFF !important;	
+  }
+media: all
+preprocess: true
+conditions:
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-advanced_search-page_1: view-advanced_search-page_1
+      view-collection-page_1: view-collection-page_1
+  context:
+    id: context
+    negate: null
+    values: ''
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+contexts: {  }
+conditions_require_all: true
