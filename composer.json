@@ -3,6 +3,7 @@
   "type": "drupal-module",
   "description": "This module setup Help documentation for Advanced Search",
   "keywords": [
+    "advanced_search", "tips"
   ],
   "license": "GPL-2.0-only",
   "homepage": "https://www.drupal.org/project/advanced_search_tips",
