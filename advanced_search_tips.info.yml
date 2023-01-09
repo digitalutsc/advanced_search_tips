@@ -4,6 +4,7 @@ description: 'This module will add Search Tips page and popup'
 core_version_requirement: ^8 || ^9 || ^10
 package: 'islandora_lite'
 dependencies:
+  - drupal:block
   - asset_injector
   - block_content
   - context
