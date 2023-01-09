@@ -39,6 +39,9 @@ function advanced_search_tips_theme() {
  * Implements hook_install().
  */
 function advanced_search_tips_install() {
+    // Remove existed configuration of structure_sync.data
+    \Drupal::configFactory()->getEditable('structure_sync.data')->delete();
+
     // Clone the Site Help page from https://memory.digital.utsc.utoronto.ca/site-help
     $doc = new \DOMDocument();
     $doc->validateOnParse = true;
