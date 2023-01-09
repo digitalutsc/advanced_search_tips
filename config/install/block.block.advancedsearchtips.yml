@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:9128695b-8174-406f-af7b-ea28c010306d'
+  module:
+    - block_content
+    - context
+  theme:
+    - barriodepartments
+id: advancedsearchtips
+theme: barriodepartments
+region: sidebar_first
+weight: -10
+provider: null
+plugin: 'block_content:9128695b-8174-406f-af7b-ea28c010306d'
+settings:
+  id: 'block_content:9128695b-8174-406f-af7b-ea28c010306d'
+  label: 'Advanced Search Tips'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion:
+      view-advanced_search-page_1: view-advanced_search-page_1
+      view-collection-page_1: view-collection-page_1
+  context:
+    id: context
+    negate: null
+    values: ''
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
