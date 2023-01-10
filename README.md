@@ -1,5 +1,11 @@
 # Advanced Search Tips
 
+## About
+
+  This module adds brief and full documentation for [Advanced search module](https://github.com/digitalutsc/advanced_search/tree/dsu_utsc). Also it will copy the content of those documentation from the Memory site right at the moment of this module is enabled. 
+* https://memory.digital.utsc.utoronto.ca/site-help
+* https://memory.digital.utsc.utoronto.ca/admin/structure/block/manage/advancedsearchtips?destination=/search-results
+
 ## Installation
 
 * Download the module by composer 
