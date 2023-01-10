@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+id: add_site_help_in_important_link_footer
+label: 'Add Site Help in Important Link footer'
+code: 'jQuery(''<li><a href="/site-help" style="border: none">Search Help</a></li>'').insertBefore(''#block-barriodepartments-footerimportantlinks > div.content > div.field--name-body > div.footer-links> ul>li:last'');'
+noscript: ''
+noscriptRegion: {  }
+jquery: false
+header: false
+preprocess: true
+conditions:
+  context:
+    id: context
+    negate: null
+    values: ''
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+contexts: {  }
+conditions_require_all: true
