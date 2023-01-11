@@ -16,9 +16,8 @@ function advanced_search_tips_requirements() {
  * Implements hook_install().
  */
 function advanced_search_tips_install() {
-    // Remove existed configuration of structure_sync.data
-    //\Drupal::configFactory()->getEditable('structure_sync.data')->delete();
-
+  $path_alias_repository = \Drupal::service('path_alias.repository');
+  if (!$path_alias_repository->lookupByAlias("/site-help", 'en')) {
     // Clone the Site Help page from https://memory.digital.utsc.utoronto.ca/site-help
     $doc = new \DOMDocument();
     $doc->validateOnParse = true;
@@ -35,13 +34,14 @@ function advanced_search_tips_install() {
     $node->set('body', $body);
     $node->body->format = 'full_html';
     $node->save();
-    
+
     // create /site-help alias
     $path_alias = PathAlias::create([
        'path' => '/node/' . $node->id(),
         'alias' => '/site-help',
     ]);
     $path_alias->save();
+  }
 }
 
 /**
