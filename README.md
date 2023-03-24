@@ -24,6 +24,5 @@ Visit `/admin/structure/structure-sync/blocks`, then click `Import custom blocks
 
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/7862086/211580601-999255c4-9cc3-47ad-a8b0-d8636a47747e.png">
 
-* Go to Block Layout at `admin/structure/block` place block into region of the active theme and the configure its visiblity.
 
 
