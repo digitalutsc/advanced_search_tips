@@ -7,3 +7,10 @@ advanced.search.tips:
   css:
     component:
       css/advanced_search_tips.css: {}
+
+bootstrap.modal: 
+  js:
+    js/bootstrap_modal.js: {}
+  css:
+    component:
+      css/bootstrap_modal.css: {}

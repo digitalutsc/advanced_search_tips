@@ -74,6 +74,8 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
   }
   if ($form_id === "advanced_search_form") { 
     $form['#attached']['library'][] = 'advanced_search_tips/advanced.search.tips';
+    if (\Drupal::service('theme.manager')->getActiveTheme()->getName() !== "barriodepartments") 
+      $form['#attached']['library'][] = 'advanced_search_tips/bootstrap.modal';
     $form["advanced_search_tips_button"] = [
       '#type' => 'markup',
       "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>')
