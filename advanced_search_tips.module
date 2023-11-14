@@ -5,8 +5,10 @@
  * Contains advanced_search_tips.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Routing\RouteMatchInterface;
 use \Drupal\node\Entity\Node;
+use \Drupal\advanced_search\Form\SettingsForm;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_help().
@@ -34,3 +36,97 @@ function advanced_search_tips_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_form_alter
+ */
+function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::service('config.factory')->getEditable(SettingsForm::CONFIG_NAME);
+  if ($form_id === "advanced_search_settings_form") { 
+    $form['advanced_search_tips'] = [
+      '#type' => 'fieldset',
+      '#title' => "Advanced Search Tips",
+      '#weight' => -1,
+    ];
+
+    // get default advanced search tips text
+    $path = \Drupal::service('extension.path.resolver')->getPath('module', 'advanced_search_tips') . "/assets/default_tip_htmls.txt";
+    $default_text = file_get_contents($path);
+    
+    $form['advanced_search_tips']['tips_title'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Title:'),
+      '#default_value' => ($config->get("tips_title") !== null) ? $config->get("tips_title") : "Advanced Search Tips"
+    );
+    $form['advanced_search_tips']['tips_html'] = array(
+      '#type' => 'text_format',
+      '#title' => t('Detail:'),
+      '#format' => "full_html",
+      '#allowed_formats' => ['full_html'],
+      '#weight' => 0,
+      '#default_value' => ($config->get("tips_html") !== null) ? $config->get("tips_html") : $default_text
+    );
+    $form['form_id'] = array(
+      '#type' => 'hidden',
+      '#value' => $form_id,
+    );
+    $form['#submit'][] = 'advanced_search_tips_form_submit';
+  }
+  if ($form_id === "advanced_search_form") { 
+    $form['#attached']['library'][] = 'advanced_search_tips/advanced.search.tips';
+    $form["advanced_search_tips_button"] = [
+      '#type' => 'markup',
+      "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>')
+    ];
+
+    $form["advanced_search_tips_modal-popup"] = [
+      '#type' => 'markup',
+      "#markup" => new TranslatableMarkup('
+          <div class="modal fade" aria-hidden="true" aria-labelledby="advancedSearchTipsModelCenterTitle" id="advancedSearchTipsModelCenter" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLongTitle">
+                          ' .$config->get("tips_title").'
+                        </h3>
+                        <p>
+                            <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
+                        </p>
+                    </div>
+                    <div class="modal-body">
+                      ' .$config->get("tips_html").'
+                    </div>
+                </div>
+            </div>
+        </div>')
+    ];
+  }
+}
+
+/**
+ * Implements hook_form_submit
+ */
+function advanced_search_tips_form_submit(&$form, &$form_state){
+  if ($form_state->getValue('form_id') !== null && $form_state->getValue('form_id') === "advanced_search_settings_form") { 
+    $config = \Drupal::service('config.factory')->getEditable(SettingsForm::CONFIG_NAME);
+    
+    $config
+      ->set(SettingsForm::SEARCH_QUERY_PARAMETER, $form_state->getValue(SettingsForm::SEARCH_QUERY_PARAMETER))
+      ->set(SettingsForm::SEARCH_RECURSIVE_PARAMETER, $form_state->getValue(SettingsForm::SEARCH_RECURSIVE_PARAMETER))
+      ->set(SettingsForm::SEARCH_ADD_OPERATOR, $form_state->getValue(SettingsForm::SEARCH_ADD_OPERATOR))
+      ->set(SettingsForm::SEARCH_REMOVE_OPERATOR, $form_state->getValue(SettingsForm::SEARCH_REMOVE_OPERATOR))
+      ->set(SettingsForm::FACET_TRUNCATE, $form_state->getValue(SettingsForm::FACET_TRUNCATE))
+      ->set(SettingsForm::EDISMAX_SEARCH_FLAG, $form_state->getValue(SettingsForm::EDISMAX_SEARCH_FLAG))
+      ->set(SettingsForm::EDISMAX_SEARCH_LABEL, $form_state->getValue(SettingsForm::EDISMAX_SEARCH_LABEL))
+      ->set(SettingsForm::SEARCH_ALL_FIELDS_FLAG, $form_state->getValue(SettingsForm::SEARCH_ALL_FIELDS_FLAG))
+      ->set(SettingsForm::DISPLAY_LIST_FLAG, $form_state->getValue(SettingsForm::DISPLAY_LIST_FLAG))
+      ->set(SettingsForm::DISPLAY_GRID_FLAG, $form_state->getValue(SettingsForm::DISPLAY_GRID_FLAG))
+      ->set(SettingsForm::DISPLAY_DEFAULT, $form_state->getValue(SettingsForm::DISPLAY_DEFAULT))
+      ->set("tips_html", $form_state->getValue("tips_html")['value'])
+      ->set("tips_title", $form_state->getValue("tips_title"))
+      ->save();
+  }
+}
+
+
+

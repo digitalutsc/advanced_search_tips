@@ -1,0 +1,12 @@
+#search-help button { 
+    font-size: 2.0em;
+    margin-top: 3px;
+}
+
+.dsu { 
+	color: #001228 !important;
+}
+
+table tbody tr:nth-child(odd) { 
+   background-color: #FFFFFF !important;	
+}

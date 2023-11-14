@@ -1,0 +1,171 @@
+ <table class="table table-bordered" style="width:446.989px;">
+                    <thead>
+                        <tr>
+                            <th style="width:71px;" scope="col">
+                                Operator
+                            </th>
+                            <th style="width:165px;" scope="col">
+                                Usage
+                            </th>
+                            <th style="width:146px;" scope="col">
+                                Example
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width:71px;">
+                                AND
+                            </td>
+                            <td style="width:165px;">
+                                Narrows&nbsp;your search to include results that contain both search terms.
+                            </td>
+                            <td style="width:146px;">
+                                orientation AND games
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                OR
+                            </td>
+                            <td style="width:165px;">
+                                Broadens your search to include results that contain either search term.
+                            </td>
+                            <td style="width:146px;">
+                                students OR undergraduates
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                NOT
+                            </td>
+                            <td style="width:165px;">
+                                Narrows your search by excluding certain words or phrases.
+                            </td>
+                            <td style="width:146px;">
+                                orientation NOT games
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                Asterisk (*)
+                            </td>
+                            <td style="width:165px;">
+                                <p>
+                                    Used to search for multiple beginnings, middles, and endings of words.
+                                </p>
+                                <p>
+                                    Replaces&nbsp;the asterisk with multiple characters.
+                                </p>
+                                <p>
+                                    &nbsp;
+                                </p>
+                            </td>
+                            <td style="width:146px;">
+                                <p>
+                                    librar*&nbsp;
+                                </p>
+                                <p>
+                                    will include results like:
+                                </p>
+                                <ul>
+                                    <li>
+                                        library
+                                    </li>
+                                    <li>
+                                        libraries
+                                    </li>
+                                    <li>
+                                        librarian
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                Question Mark (?)
+                            </td>
+                            <td style="width:165px;">
+                                <p>
+                                    Used to search for multiple beginnings, middles, and endings of words.
+                                </p>
+                                <p>
+                                    Replaces the question mark with a single character.
+                                </p>
+                            </td>
+                            <td style="width:146px;">
+                                <p>
+                                    ?est
+                                </p>
+                                <p>
+                                    will include results like:
+                                </p>
+                                <ul>
+                                    <li>
+                                        Test
+                                    </li>
+                                    <li>
+                                        Pest
+                                    </li>
+                                    <li>
+                                        West
+                                    </li>
+                                </ul>
+                                <p>
+                                    Will not include:
+                                </p>
+                                <ul>
+                                    <li>
+                                        Contest
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                Tilde (~)
+                            </td>
+                            <td style="width:165px;">
+                                <p>
+                                    Used to make your search ‘fuzzy’ or search for synonyms and alternate spellings.&nbsp;
+                                </p>
+                                <p>
+                                    Note: Only works for Keyword search
+                                </p>
+                            </td>
+                            <td style="width:146px;">
+                                <p>
+                                    Shaun~
+                                </p>
+                                <p>
+                                    will include results like:
+                                </p>
+                                <ul>
+                                    <li>
+                                        Shaun
+                                    </li>
+                                    <li>
+                                        Sean
+                                    </li>
+                                    <li>
+                                        Shawn
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:71px;">
+                                Quotation Marks (“”)
+                            </td>
+                            <td style="width:165px;">
+                                Uses quotation marks to search for a specific word or phrase.
+                            </td>
+                            <td style="width:146px;">
+                                “alumni golf tournament”
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <a href="/site-help">View Full Search Documentation</a>
+                </p>
