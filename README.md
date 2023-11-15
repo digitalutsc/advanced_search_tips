@@ -20,9 +20,12 @@ composer require digitalutsc/advanced_search_tips
 drush en -y advanced_search_tips
 ````
 
-Visit `/admin/structure/structure-sync/blocks`, then click `Import custom blocks (safely)`
+Visit `/admin/admin/config/search/advanced`, make sure HTML content ready in Advanced Search Tips section, then click save
 
-<img width="960" alt="image" src="https://user-images.githubusercontent.com/7862086/211580601-999255c4-9cc3-47ad-a8b0-d8636a47747e.png">
+<img width="990" alt="image" src="https://github.com/digitalutsc/advanced_search_tips/assets/7862086/cfe58fc5-86e3-4baf-b943-36c13ee1fa75">
+
+
+
 
 
 
