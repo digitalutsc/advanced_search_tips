@@ -1,0 +1,6 @@
+services:
+  advanced_search.request_subscriber:
+    class: Drupal\advanced_search\EventSubscriber\RequestSubscriber
+    arguments: ['@current_route_match']
+    tags:
+      - { name: event_subscriber }
