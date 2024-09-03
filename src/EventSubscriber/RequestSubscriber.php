@@ -1,6 +1,6 @@
 <?php 
 
-namespace Drupal\advanced_search\EventSubscriber;
+namespace Drupal\advanced_search_tips\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
