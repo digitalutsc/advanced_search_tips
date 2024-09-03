@@ -6,15 +6,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 class RequestSubscriber implements EventSubscriberInterface {
 
-    protected $routeMatch;
+  protected $routeMatch;
 
-    public function __construct(RouteMatchInterface $route_match) {
-      $this->routeMatch = $route_match;
-    }
+  public function __construct(RouteMatchInterface $route_match) {
+    $this->routeMatch = $route_match;
+  }
 
   public static function getSubscribedEvents() {
     $events[KernelEvents::REQUEST][] = ['onRequest', 0];
@@ -24,24 +25,26 @@ class RequestSubscriber implements EventSubscriberInterface {
   private function hasValidQueryFormat(array $queryParams) {
     foreach ($queryParams as $key => $values) {
       // if not a, is hacked
-      if ($key != "a" && is_array($values)) {
-        return false;
+      if ($key != "a"  && is_array($values)) {
+        if ($key == "f" && count($values) < 2) {
+          return TRUE;
+        }
+        return FALSE;
       }
+      
       // check the value
       if (is_array($values)) {
         $condition = 0; 
         foreach ($values as $value) {
-          foreach ($value as $subKey => $subValue) {
-            if ($subKey == "f" || $subKey == "v") {
-              $condition ++;
-            }
+          if (array_key_exists('f', $value) && array_key_exists('v', $value)) {
+            $condition++;
           }
         }
-        if ($condition == 2) {
-          return true;
+        if ($condition % 2 == 0) {
+          return TRUE;
         }
         else {
-          return false;
+          return FALSE;
         }
       }
       
@@ -59,33 +62,31 @@ class RequestSubscriber implements EventSubscriberInterface {
   }
 
   public function onRequest(RequestEvent $event) {
-    $request = $event->getRequest();
-    
-    // not ajax request
-    if (!($request->isXmlHttpRequest())) {
-      // Check if the current route is a view.
-      $route_name = $this->routeMatch->getRouteName();
-      if (strpos($route_name, 'view.') === 0) {
-          // Extract the view ID from the route name.
-          $parts = explode('.', $route_name);
-          $view_id = $parts[1];
+    $config = \Drupal::config('advanced_search.settings');
+    if (isset($config) && $config->get("search_request_validation") === 1) {
+      $request = $event->getRequest();
+      // not ajax request
+      if (!($request->isXmlHttpRequest())) {
+        // Check if the current route is a view.
+        $route_name = $this->routeMatch->getRouteName();
+        if (strpos($route_name, 'view.') === 0) {
+            // Extract the view ID from the route name.
+            $parts = explode('.', $route_name);
+            $view_id = $parts[1];
 
-          if ($view_id === "advanced_search") {
-            // Your custom logic here.
-            drupal_log('Request received.');
-            $query_params = $request->query->all();
-            
-            if (!empty($query_params) && $this->isNestedArray($query_params)) { 
-              // Check if the required query parameters are present.
-              if ($this->hasValidQueryFormat($query_params)) {
-                  // Your custom logic here.
-                  drupal_log('This is legit search request');
-              } else {
-                  // Redirect to the 404 page if the required query parameters are not present.
-                    throw new NotFoundHttpException();
+            if ($view_id === "advanced_search") {
+              // Your custom logic here.
+              $query_params = $request->query->all();
+              
+              if (!empty($query_params) && $this->isNestedArray($query_params)) { 
+                // Check if the required query parameters are present.
+                if (!$this->hasValidQueryFormat($query_params)) {
+                    // Throw Exception 
+                    throw new BadRequestHttpException();
+                }
               }
             }
-          }
+        }
       }
     }
   }
