@@ -66,6 +66,17 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       '#weight' => 0,
       '#default_value' => ($config->get("tips_html") !== null) ? $config->get("tips_html") : $default_text
     );
+    $form['advanced_search_validation'] = [
+      '#type' => 'fieldset',
+      '#title' => "Advanced Search Validation",
+      '#weight' => -1,
+    ];
+    $form['advanced_search_validation']['search_request_validation'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable Search request validation.'),
+      '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
+      '#default_value' => ($config->get("search_request_validation") !== null) ? $config->get("search_request_validation") : FALSE
+    );
     $form['form_id'] = array(
       '#type' => 'hidden',
       '#value' => $form_id,
@@ -126,6 +137,7 @@ function advanced_search_tips_form_submit(&$form, &$form_state){
       ->set(SettingsForm::DISPLAY_DEFAULT, $form_state->getValue(SettingsForm::DISPLAY_DEFAULT))
       ->set("tips_html", $form_state->getValue("tips_html")['value'])
       ->set("tips_title", $form_state->getValue("tips_title"))
+      ->set("search_request_validation", $form_state->getValue("search_request_validation"))
       ->save();
   }
 }
