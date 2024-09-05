@@ -34,22 +34,20 @@ class RequestSubscriber implements EventSubscriberInterface {
       
       // check the value
       if (is_array($values)) {
-        $condition = 0; 
+        $condition = TRUE; 
         foreach ($values as $value) {
           if (array_key_exists('f', $value) && array_key_exists('v', $value)) {
-            $condition++;
+            $condition &= TRUE;
+          }
+          else {
+            $condition &= FALSE;
           }
         }
-        if ($condition % 2 == 0) {
-          return TRUE;
-        }
-        else {
-          return FALSE;
-        }
+        return $condition;
       }
       
     }
-    return false;
+    return FALSE;
   }
 
   private function isNestedArray(array $array) {
@@ -58,27 +56,25 @@ class RequestSubscriber implements EventSubscriberInterface {
         return true;
       }
     }
-    return false;
+    return FALSE;
   }
 
   public function onRequest(RequestEvent $event) {
     $config = \Drupal::config('advanced_search.settings');
     if (isset($config) && $config->get("search_request_validation") === 1) {
       $request = $event->getRequest();
+      $referer = $request->headers->get('referer');
+      
       // not ajax request
       if (!($request->isXmlHttpRequest())) {
         // Check if the current route is a view.
         $route_name = $this->routeMatch->getRouteName();
         if (strpos($route_name, 'view.') === 0) {
-            // Extract the view ID from the route name.
-            $parts = explode('.', $route_name);
-            $view_id = $parts[1];
-
-            if ($view_id === "advanced_search") {
+            if (explode('.', $route_name)[1] === "advanced_search") {
               // Your custom logic here.
               $query_params = $request->query->all();
               
-              if (!empty($query_params) && $this->isNestedArray($query_params)) { 
+              if ((!$referer) && !empty($query_params) && $this->isNestedArray($query_params)) { 
                 // Check if the required query parameters are present.
                 if (!$this->hasValidQueryFormat($query_params)) {
                     // Throw Exception 
