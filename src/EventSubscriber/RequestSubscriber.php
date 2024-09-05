@@ -26,7 +26,7 @@ class RequestSubscriber implements EventSubscriberInterface {
     foreach ($queryParams as $key => $values) {
       // if not a, is hacked
       if ($key != "a"  && is_array($values)) {
-        if ($key == "f" && count($values) < 2) {
+        if ($key == "f" && count($values) < 5) {
           return TRUE;
         }
         return FALSE;
