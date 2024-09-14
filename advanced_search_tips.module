@@ -42,6 +42,12 @@ function advanced_search_tips_theme() {
  */
 function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $config = \Drupal::service('config.factory')->getEditable(SettingsForm::CONFIG_NAME);
+  
+  if ($form_id === "advanced_search_form") {
+    if (isset($form['ajax']['recursive']) && $config->get("enable-include-sub-collections") === 1) { 
+      $form['ajax']['recursive']['#default_value'] = TRUE;
+    }
+  }
   if ($form_id === "advanced_search_settings_form") { 
     $form['advanced_search_tips'] = [
       '#type' => 'fieldset',
@@ -68,7 +74,7 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
     );
     $form['advanced_search_validation'] = [
       '#type' => 'fieldset',
-      '#title' => "Advanced Search Validation",
+      '#title' => "Advanced Search Assistance",
       '#weight' => -1,
     ];
     $form['advanced_search_validation']['search_request_validation'] = array(
@@ -76,6 +82,12 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       '#title' => t('Enable Search request validation.'),
       '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
       '#default_value' => ($config->get("search_request_validation") !== null) ? $config->get("search_request_validation") : FALSE
+    );
+    $form['advanced_search_validation']['enable-include-sub-collections'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable Include Sub-Collections.'),
+      '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
+      '#default_value' => ($config->get("enable-include-sub-collections") !== null) ? $config->get("enable-include-sub-collections") : FALSE
     );
     $form['form_id'] = array(
       '#type' => 'hidden',
@@ -138,6 +150,7 @@ function advanced_search_tips_form_submit(&$form, &$form_state){
       ->set("tips_html", $form_state->getValue("tips_html")['value'])
       ->set("tips_title", $form_state->getValue("tips_title"))
       ->set("search_request_validation", $form_state->getValue("search_request_validation"))
+      ->set("enable-include-sub-collections", $form_state->getValue("enable-include-sub-collections"))
       ->save();
   }
 }
