@@ -48,6 +48,7 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       if ($config->get("show-hide-include-sub-collections") != 1) { 
         $form['ajax']['recursive']['#default_value'] = TRUE;
         $form['ajax']['recursive']['#access'] = FALSE;
+        $form['ajax']['recursive']['#attributes'] = ['style' => 'display: none;'];
       }else {
         if ($config->get("enable-include-sub-collections") === 1) { 
           $form['ajax']['recursive']['#default_value'] = TRUE;
