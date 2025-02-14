@@ -74,7 +74,12 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
     $form['advanced_search_tips']['tips_title'] = array(
       '#type' => 'textfield',
       '#title' => t('Title:'),
-      '#default_value' => ($config->get("tips_title") !== null) ? $config->get("tips_title") : "Advanced Search Tips"
+      '#default_value' => ($config->get("tips_title") !== null) ? $config->get("tips_title") : "Advanced Search Tips",
+      '#description' => '<p><strong>Note: </strong></p><ul> <li>For multilingual, switch over <strong>Source </strong> mode, then
+        <ul>
+        <li>Tag multilingal content with associate language code ie. English => en, Tamil => ta, or French => fr </li>
+        <li>If there are complicated hiarachy of html components, only tagging the parent tag instead all of its chidlren </li>
+        </ul></li></ul>'
     );
     $form['advanced_search_tips']['tips_html'] = array(
       '#type' => 'text_format',
@@ -82,7 +87,8 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       '#format' => "full_html",
       '#allowed_formats' => ['full_html'],
       '#weight' => 0,
-      '#default_value' => ($config->get("tips_html") !== null) ? $config->get("tips_html") : $default_text
+      '#default_value' => ($config->get("tips_html") !== null) ? $config->get("tips_html") : $default_text,
+      '#translation' => TRUE,
     );
     $form['advanced_search_validation'] = [
       '#type' => 'fieldset',
@@ -127,6 +133,32 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>')
     ];
 
+    if (\Drupal::languageManager()->isMultilingual()) {
+        // Get the current language code from Drupal
+        $lang_code = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+        // Load the HTML string into a DOMDocument
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true); // Suppress errors due to malformed HTML
+        $dom->loadHTML($config->get("tips_html"));
+        libxml_clear_errors();
+
+        // Create a new DOMXPath object
+        $xpath = new DOMXPath($dom);
+
+        // Query for elements with the lang attribute matching the current language code
+        $query = "//*[@lang='$lang_code']";
+        $elements = $xpath->query($query);
+
+        $search_tips = "";
+        // Iterate over the matched elements and output them
+        foreach ($elements as $element) {
+             $search_tip .= $dom->saveHTML($element) . "\n";
+        }
+    }else {
+        $search_tip = $config->get("tips_html");
+    }
+
     $form["advanced_search_tips_modal-popup"] = [
       '#type' => 'markup',
       "#markup" => new TranslatableMarkup('
@@ -135,14 +167,14 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="exampleModalLongTitle">
-                          ' .$config->get("tips_title").'
+                          ' . t($config->get("tips_title")) .'
                         </h3>
                         <p>
                             <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
                         </p>
                     </div>
                     <div class="modal-body">
-                      ' .$config->get("tips_html").'
+                      ' . $search_tip .'
                     </div>
                 </div>
             </div>
