@@ -45,17 +45,11 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
   
   if ($form_id === "advanced_search_form") {
     if (isset($form['ajax']['recursive'])) { 
-      if ($config->get("show-hide-include-sub-collections") != 1) { 
+      if ($config->get("enable-include-sub-collections") === 1) { 
         $form['ajax']['recursive']['#default_value'] = TRUE;
-        $form['ajax']['recursive']['#access'] = FALSE;
-        $form['ajax']['recursive']['#attributes'] = ['style' => 'display: none;'];
-      }else {
-        if ($config->get("enable-include-sub-collections") === 1) { 
-          $form['ajax']['recursive']['#default_value'] = TRUE;
-        }
-        if (!empty($config->get("customize-include-sub-collections-label"))) {  
-          $form['ajax']['recursive']['#title'] = $config->get("customize-include-sub-collections-label");
-        }
+      }
+      if (!empty($config->get("customize-include-sub-collections-label"))) {  
+        $form['ajax']['recursive']['#title'] = $config->get("customize-include-sub-collections-label");
       }
     }
   }
@@ -106,12 +100,6 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
       '#title' => t('Enable Include Sub-Collections checkbox by default.'),
       '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
       '#default_value' => ($config->get("enable-include-sub-collections") !== null) ? $config->get("enable-include-sub-collections") : FALSE
-    );
-    $form['advanced_search_validation']['show-hide-include-sub-collections'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Show Include Sub-Collections checkbox.'),
-      '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
-      '#default_value' => ($config->get("show-hide-include-sub-collections") !== null) ? $config->get("show-hide-include-sub-collections") : TRUE
     );
     $form['advanced_search_validation']['customize-include-sub-collections-label'] = array(
       '#type' => 'textfield',
@@ -206,11 +194,7 @@ function advanced_search_tips_form_submit(&$form, &$form_state){
       ->set("tips_title", $form_state->getValue("tips_title"))
       ->set("search_request_validation", $form_state->getValue("search_request_validation"))
       ->set("enable-include-sub-collections", $form_state->getValue("enable-include-sub-collections"))
-      ->set("show-hide-include-sub-collections", $form_state->getValue("show-hide-include-sub-collections"))
       ->set("customize-include-sub-collections-label", $form_state->getValue("customize-include-sub-collections-label"))
       ->save();
   }
 }
-
-
-
