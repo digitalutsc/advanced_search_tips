@@ -138,7 +138,7 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
         $query = "//*[@lang='$lang_code']";
         $elements = $xpath->query($query);
 
-        $search_tips = "";
+        $search_tip = "";
         // Iterate over the matched elements and output them
         foreach ($elements as $element) {
              $search_tip .= $dom->saveHTML($element) . "\n";
