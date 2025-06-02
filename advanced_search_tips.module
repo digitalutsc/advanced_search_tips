@@ -206,7 +206,8 @@ function advanced_search_tips_form_submit(&$form, &$form_state){
 function advanced_search_tips_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
   if ($_SERVER['SERVER_NAME'] == "fjt.digital.utsc.utoronto.ca" && $view->id() == "browse_events") {
     $paramList = \Drupal::request()->query->all();
-    if (array_key_exists('a', $paramList)) {
+    //if (array_key_exists('a', $paramList) || array_key_exists('sort_order', $paramList)) {
+    if (count($paramList) > 0) { 
       $sorts = $view->getHandlers('sort');
       foreach (array_keys($sorts) as $key => $sort) { 
         drupal_log($sort);
@@ -219,10 +220,10 @@ function advanced_search_tips_views_pre_view(ViewExecutable $view, $display_id, 
   }
   else if ($_SERVER['SERVER_NAME'] == "fjt.digital.utsc.utoronto.ca" && $view->id() == "advanced_search") {
     $paramList = \Drupal::request()->query->all();
-    if (array_key_exists('a', $paramList)) {
+    //if (array_key_exists('a', $paramList)) {
+    if (count($paramList) > 0) {
       $sorts = $view->getHandlers('sort');
       foreach (array_keys($sorts) as $key => $sort) {
-        drupal_log($sort);
         if (strpos($sort, "title") !== false){
           unset($sorts[$sort]);
         }
