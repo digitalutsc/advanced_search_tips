@@ -175,7 +175,7 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="exampleModalLongTitle">
-                          ' . t($config->get("tips_title")) .'
+                          ' . t($config->get("tips_title") ?: 'Advanced Search Tips') .'
                         </h3>
                         <p>
                             <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
