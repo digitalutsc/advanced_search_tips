@@ -20,6 +20,13 @@ class LoadTest extends BrowserTestBase {
   public static $modules = ['advanced_search_tips'];
 
   /**
+   * The default theme to use for tests.
+   *
+   * @var string
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * A user with permission to administer site configuration.
    *
    * @var \Drupal\user\UserInterface
