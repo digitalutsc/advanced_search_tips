@@ -17,7 +17,14 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['advanced_search_tips'];
+  public static $modules = [
+    'block',
+    'asset_injector',
+    'block_content',
+    'context',
+    'fontawesome',
+    'advanced_search_tips',
+  ];
 
   /**
    * The default theme to use for tests.
