@@ -1,7 +1,7 @@
 name: 'Advanced Search Tips'
 type: module
 description: 'This module will add Search Tips page and popup'
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^8 || ^9 || ^10 || ^11
 package: 'islandora_lite'
 dependencies:
   - drupal:block
