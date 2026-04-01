@@ -5,11 +5,10 @@
  * Contains advanced_search_tips.module.
  */
 
-use \Drupal\Core\Routing\RouteMatchInterface;
-use \Drupal\node\Entity\Node;
-use \Drupal\advanced_search\Form\SettingsForm;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\advanced_search\Form\SettingsForm;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -39,20 +38,20 @@ function advanced_search_tips_theme() {
 }
 
 /**
- * Implements hook_form_alter
+ * Implements hook_form_alter().
  */
-function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config = \Drupal::service('config.factory')->getEditable(SettingsForm::CONFIG_NAME);
-  
+
   if ($form_id === "advanced_search_form") {
-    if (isset($form['ajax']['recursive'])) { 
-      if ($config->get("enable-include-sub-collections") === 1) { 
+    if (isset($form['ajax']['recursive'])) {
+      if ($config->get("enable-include-sub-collections") === 1) {
         $form['ajax']['recursive']['#default_value'] = TRUE;
       }
       if ($config->get("hide-include-sub-collections-checkbox") === 1) {
-        // Hide the checkbox and its label/text by denying access
+        // Hide the checkbox and its label/text by denying access.
         $form['ajax']['recursive']['#type'] = 'hidden';
-        // Set default value when hiding and sub-collections are enabled
+        // Set default value when hiding and sub-collections are enabled.
         if ($config->get("enable-include-sub-collections") === 1) {
           $form['ajax']['recursive']['#default_value'] = TRUE;
           $form['ajax']['recursive']['#value'] = '1';
@@ -62,111 +61,117 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
           $form['ajax']['recursive']['#value'] = '0';
         }
       }
-      if (!empty($config->get("customize-include-sub-collections-label"))) {  
+      if (!empty($config->get("customize-include-sub-collections-label"))) {
         $form['ajax']['recursive']['#title'] = $config->get("customize-include-sub-collections-label");
       }
     }
   }
-  
-  if ($form_id === "advanced_search_settings_form") { 
+
+  if ($form_id === "advanced_search_settings_form") {
     $form['advanced_search_tips'] = [
       '#type' => 'fieldset',
       '#title' => "Advanced Search Tips",
       '#weight' => -1,
     ];
 
-    // get default advanced search tips text
+    // Get default advanced search tips text.
     $path = \Drupal::service('extension.path.resolver')->getPath('module', 'advanced_search_tips') . "/assets/default_tip_htmls.txt";
     $default_text = file_get_contents($path);
-    
-    $form['advanced_search_tips']['tips_title'] = array(
+
+    $form['advanced_search_tips']['tips_title'] = [
       '#type' => 'textfield',
       '#title' => t('Title:'),
-      '#default_value' => ($config->get("tips_title") !== null) ? $config->get("tips_title") : "Advanced Search Tips",
+      '#default_value' => ($config->get("tips_title") !== NULL) ? $config->get("tips_title") : "Advanced Search Tips",
+      // phpcs:ignore -- #description values usually have to run through t() for translation
       '#description' => '<p><strong>Note: </strong></p><ul> <li>For multilingual, switch over <strong>Source </strong> mode, then
         <ul>
         <li>Tag multilingal content with associate language code ie. English => en, Tamil => ta, or French => fr </li>
         <li>If there are complicated hiarachy of html components, only tagging the parent tag instead all of its chidlren </li>
-        </ul></li></ul>'
-    );
-    $form['advanced_search_tips']['tips_html'] = array(
+        </ul></li></ul>',
+    ];
+    $form['advanced_search_tips']['tips_html'] = [
       '#type' => 'text_format',
       '#title' => t('Detail:'),
       '#format' => "full_html",
       '#allowed_formats' => ['full_html'],
       '#weight' => 0,
-      '#default_value' => ($config->get("tips_html") !== null) ? $config->get("tips_html") : $default_text,
+      '#default_value' => ($config->get("tips_html") !== NULL) ? $config->get("tips_html") : $default_text,
       '#translation' => TRUE,
-    );
+    ];
     $form['advanced_search_validation'] = [
       '#type' => 'fieldset',
       '#title' => "Advanced Search Assistance",
       '#weight' => -1,
     ];
-    $form['advanced_search_validation']['search_request_validation'] = array(
+    $form['advanced_search_validation']['search_request_validation'] = [
       '#type' => 'checkbox',
       '#title' => t('Enable Search request validation.'),
       '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
-      '#default_value' => ($config->get("search_request_validation") !== null) ? $config->get("search_request_validation") : FALSE
-    );
-    $form['advanced_search_validation']['enable-include-sub-collections'] = array(
+      '#default_value' => ($config->get("search_request_validation") !== NULL) ? $config->get("search_request_validation") : FALSE,
+    ];
+    $form['advanced_search_validation']['enable-include-sub-collections'] = [
       '#type' => 'checkbox',
       '#title' => t('Enable Include Sub-Collections checkbox by default.'),
       '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
-      '#default_value' => ($config->get("enable-include-sub-collections") !== null) ? $config->get("enable-include-sub-collections") : FALSE
-    );
-    $form['advanced_search_validation']['hide-include-sub-collections-checkbox'] = array(
+      '#default_value' => ($config->get("enable-include-sub-collections") !== NULL) ? $config->get("enable-include-sub-collections") : FALSE,
+    ];
+    $form['advanced_search_validation']['hide-include-sub-collections-checkbox'] = [
       '#type' => 'checkbox',
       '#title' => t('Hide "Include Sub-Collections" checkbox'),
       '#description' => t('This option is only available if the module Advanced Search Tips is enable.'),
-      '#default_value' => ($config->get("hide-include-sub-collections-checkbox") !== null) ? $config->get("hide-include-sub-collections-checkbox") : FALSE
-    );
-    $form['advanced_search_validation']['customize-include-sub-collections-label'] = array(
+      '#default_value' => ($config->get("hide-include-sub-collections-checkbox") !== NULL) ? $config->get("hide-include-sub-collections-checkbox") : FALSE,
+    ];
+    $form['advanced_search_validation']['customize-include-sub-collections-label'] = [
       '#type' => 'textfield',
       '#title' => t('Customize the message of "Include Sub-Collections checkbox"'),
-      '#default_value' => ($config->get("customize-include-sub-collections-label") !== null) ? $config->get("customize-include-sub-collections-label") : "Include Sub-Collections"
-    );
-    $form['form_id'] = array(
+      '#default_value' => ($config->get("customize-include-sub-collections-label") !== NULL) ? $config->get("customize-include-sub-collections-label") : "Include Sub-Collections",
+    ];
+    $form['form_id'] = [
       '#type' => 'hidden',
       '#value' => $form_id,
-    );
+    ];
     $form['#submit'][] = 'advanced_search_tips_form_submit';
   }
-  if ($form_id === "advanced_search_form") { 
+  if ($form_id === "advanced_search_form") {
     $form['#attached']['library'][] = 'advanced_search_tips/advanced.search.tips';
-    if (\Drupal::service('theme.manager')->getActiveTheme()->getName() !== "barriodepartments") 
+    if (\Drupal::service('theme.manager')->getActiveTheme()->getName() !== "barriodepartments") {
       $form['#attached']['library'][] = 'advanced_search_tips/bootstrap.modal';
+    }
     $form["advanced_search_tips_button"] = [
       '#type' => 'markup',
-      "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>')
+      "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>'),
     ];
 
     if (\Drupal::languageManager()->isMultilingual()) {
-        // Get the current language code from Drupal
-        $lang_code = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      // Get the current language code from Drupal.
+      $lang_code = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-        // Load the HTML string into a DOMDocument
-        $dom = new DOMDocument();
-        libxml_use_internal_errors(true); // Suppress errors due to malformed HTML
-        $dom->loadHTML('<?xml encoding="UTF-8">' . $config->get("tips_html"));
-        libxml_clear_errors();
+      // Load the HTML string into a DOMDocument.
+      $dom = new DOMDocument();
+      // Suppress errors due to malformed HTML.
+      libxml_use_internal_errors(TRUE);
+      $dom->loadHTML('<?xml encoding="UTF-8">' . $config->get("tips_html"));
+      libxml_clear_errors();
 
-        // Create a new DOMXPath object
-        $xpath = new DOMXPath($dom);
+      // Create a new DOMXPath object.
+      $xpath = new DOMXPath($dom);
 
-        // Query for elements with the lang attribute matching the current language code
-        $query = "//*[@lang='$lang_code']";
-        $elements = $xpath->query($query);
+      // Query for elements with the lang attribute.
+      // Matching the current language code.
+      $query = "//*[@lang='$lang_code']";
+      $elements = $xpath->query($query);
 
-        $search_tip = "";
-        // Iterate over the matched elements and output them
-        foreach ($elements as $element) {
-             $search_tip .= $dom->saveHTML($element) . "\n";
-        }
-    }else {
-        $search_tip = $config->get("tips_html");
+      $search_tip = "";
+      // Iterate over the matched elements and output them.
+      foreach ($elements as $element) {
+        $search_tip .= $dom->saveHTML($element) . "\n";
+      }
+    }
+    else {
+      $search_tip = $config->get("tips_html");
     }
 
+    // phpcs:disable
     $form["advanced_search_tips_modal-popup"] = [
       '#type' => 'markup',
       "#markup" => new TranslatableMarkup('
@@ -175,29 +180,30 @@ function advanced_search_tips_form_alter(&$form, \Drupal\Core\Form\FormStateInte
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="exampleModalLongTitle">
-                          ' . t($config->get("tips_title") ?: 'Advanced Search Tips') .'
+                          ' . t($config->get("tips_title") ?: 'Advanced Search Tips') . '
                         </h3>
                         <p>
                             <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
                         </p>
                     </div>
                     <div class="modal-body">
-                      ' . $search_tip .'
+                      ' . $search_tip . '
                     </div>
                 </div>
             </div>
-        </div>')
+        </div>'),
     ];
+    // phpcs:enable
   }
 }
 
 /**
- * Implements hook_form_submit
+ * Implements hook_form_submit().
  */
-function advanced_search_tips_form_submit(&$form, &$form_state){
-  if ($form_state->getValue('form_id') !== null && $form_state->getValue('form_id') === "advanced_search_settings_form") { 
+function advanced_search_tips_form_submit(&$form, &$form_state) {
+  if ($form_state->getValue('form_id') !== NULL && $form_state->getValue('form_id') === "advanced_search_settings_form") {
     $config = \Drupal::service('config.factory')->getEditable(SettingsForm::CONFIG_NAME);
-    
+
     $config
       ->set(SettingsForm::SEARCH_QUERY_PARAMETER, $form_state->getValue(SettingsForm::SEARCH_QUERY_PARAMETER))
       ->set(SettingsForm::SEARCH_RECURSIVE_PARAMETER, $form_state->getValue(SettingsForm::SEARCH_RECURSIVE_PARAMETER))

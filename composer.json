@@ -20,7 +20,8 @@
   },
   "require": {
     "drupal/asset_injector": "^2",
-    "drupal/fontawesome":"^2"
+    "drupal/fontawesome":"^2",
+    "drupal/context": "^5@RC"
   },
   "require-dev": {
     "phpunit/phpunit": "^8",
