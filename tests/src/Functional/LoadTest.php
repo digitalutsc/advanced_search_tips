@@ -21,6 +21,7 @@ class LoadTest extends BrowserTestBase {
     'block',
     'asset_injector',
     'block_content',
+    'context',
     'fontawesome',
     'advanced_search_tips',
   ];
