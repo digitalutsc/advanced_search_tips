@@ -82,12 +82,11 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
       '#type' => 'textfield',
       '#title' => t('Title:'),
       '#default_value' => ($config->get("tips_title") !== NULL) ? $config->get("tips_title") : "Advanced Search Tips",
-      // phpcs:ignore -- #description values usually have to run through t() for translation
-      '#description' => '<p><strong>Note: </strong></p><ul> <li>For multilingual, switch over <strong>Source </strong> mode, then
+      '#description' => t('<p><strong>Note: </strong></p><ul> <li>For multilingual, switch over <strong>Source </strong> mode, then
         <ul>
         <li>Tag multilingal content with associate language code ie. English => en, Tamil => ta, or French => fr </li>
         <li>If there are complicated hiarachy of html components, only tagging the parent tag instead all of its chidlren </li>
-        </ul></li></ul>',
+        </ul></li></ul>'),
     ];
     $form['advanced_search_tips']['tips_html'] = [
       '#type' => 'text_format',
@@ -171,7 +170,7 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
       $search_tip = $config->get("tips_html");
     }
 
-    // phpcs:disable
+    // phpcs:disable -- Drupal.Semantics.FunctionT.Concat
     $form["advanced_search_tips_modal-popup"] = [
       '#type' => 'markup',
       "#markup" => new TranslatableMarkup('
@@ -180,7 +179,7 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="exampleModalLongTitle">
-                          ' . t($config->get("tips_title") ?: 'Advanced Search Tips') . '
+                          ' . t('@title', ['@title' => $config->get("tips_title") ?: 'Advanced Search Tips']) . '
                         </h3>
                         <p>
                             <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
@@ -193,7 +192,6 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
             </div>
         </div>'),
     ];
-    // phpcs:enable
   }
 }
 
