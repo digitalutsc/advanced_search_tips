@@ -7,20 +7,33 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * The RequestSubscriber class.
  */
 class RequestSubscriber implements EventSubscriberInterface {
 
-  // phpcs:ignore -- Missing member variable doc comment
+  /**
+   * The route match service.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
   protected $routeMatch;
+
+  /**
+   * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * Constructs a new RequestSubscriber object.
    */
-  public function __construct(RouteMatchInterface $route_match) {
+  public function __construct(RouteMatchInterface $route_match, ConfigFactoryInterface $config_factory) {
     $this->routeMatch = $route_match;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -78,8 +91,7 @@ class RequestSubscriber implements EventSubscriberInterface {
    * Handles the request event.
    */
   public function onRequest(RequestEvent $event) {
-    // phpcs:ignore -- \Drupal calls should be avoided in classes, use dependency injection instead
-    $config = \Drupal::config('advanced_search.settings');
+    $config = $this->configFactory->get('advanced_search.settings');
     if (isset($config) && $config->get("search_request_validation") === 1) {
       $request = $event->getRequest();
       $referer = $request->headers->get('referer');
