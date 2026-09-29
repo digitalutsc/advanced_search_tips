@@ -20,7 +20,7 @@
   },
   "require": {
     "drupal/asset_injector": "^2",
-    "drupal/fontawesome":"^2",
+    "drupal/fontawesome":"^3.0",
     "drupal/context": "^5@RC"
   },
   "require-dev": {
