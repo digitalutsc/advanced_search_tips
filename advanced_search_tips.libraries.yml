@@ -1,15 +1,16 @@
 advanced.search.tips:
   js:
     js/advanced_search_tips.js: {}
-    https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js: { type: external, minified: true }
-    https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js: { type: external, minified: true }
   css:
     component:
       css/advanced_search_tips.css: {}
+  dependencies:
+    - core/drupal
+    - core/once
 
-bootstrap.modal: 
-  js:
-    js/bootstrap_modal.js: {}
+# Modal styling for themes without Bootstrap CSS (the barriodepartments theme
+# brings its own). The modal itself is opened by js/advanced_search_tips.js.
+bootstrap.modal:
   css:
     component:
       css/bootstrap_modal.css: {}
