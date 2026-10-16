@@ -138,7 +138,7 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
     }
     $form["advanced_search_tips_button"] = [
       '#type' => 'markup',
-      "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-toggle="modal" data-target="#advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>'),
+      "#markup" => new TranslatableMarkup('<span id="search-help"><button type="button" class="btn btn-link dsu" data-ast-modal-open="#advancedSearchTipsModelCenter" aria-controls="advancedSearchTipsModelCenter"><i class="fa-solid fa-circle-info"></i></button></span>'),
     ];
 
     if (\Drupal::languageManager()->isMultilingual()) {
@@ -174,7 +174,7 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
     $form["advanced_search_tips_modal-popup"] = [
       '#type' => 'markup',
       "#markup" => new TranslatableMarkup('
-          <div class="modal fade" aria-hidden="true" aria-labelledby="advancedSearchTipsModelCenterTitle" id="advancedSearchTipsModelCenter" role="dialog" tabindex="-1">
+          <div class="modal fade" aria-hidden="true" aria-labelledby="exampleModalLongTitle" id="advancedSearchTipsModelCenter" role="dialog" tabindex="-1" data-ast-modal>
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -182,7 +182,7 @@ function advanced_search_tips_form_alter(&$form, FormStateInterface $form_state,
                           ' . t('@title', ['@title' => $config->get("tips_title") ?: 'Advanced Search Tips']) . '
                         </h3>
                         <p>
-                            <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
+                            <button class="close" aria-label="Close" data-ast-modal-close type="button"><span aria-hidden="true">×</span></button>
                         </p>
                     </div>
                     <div class="modal-body">
